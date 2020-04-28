@@ -226,12 +226,12 @@ def GetMonthlyAverages(MoDataDF):
         MonthAVG.append(MoDataDF.loc[dates.month == (i+1)].mean()) #average of statistics for that month
         
     # create dataframe for all of the months
-    MonthlyAverages = pd.DataFrame({'January':MonthAVG[0],'February':MonthAVG[1],
-                                    'March':MonthAVG[2],'April':MonthAVG[3],
-                                    'May':MonthAVG[4],'June':MonthAVG[5],
-                                    'July':MonthAVG[6],'August':MonthAVG[7],
-                                    'September':MonthAVG[8],'October':MonthAVG[9],
-                                    'November':MonthAVG[10],'December':MonthAVG[11]})
+    MonthlyAverages = pd.DataFrame({1:MonthAVG[0],2:MonthAVG[1],
+                                    3:MonthAVG[2],4:MonthAVG[3],
+                                    5:MonthAVG[4],6:MonthAVG[5],
+                                    7:MonthAVG[6],8:MonthAVG[7],
+                                    9:MonthAVG[8],10:MonthAVG[9],
+                                    11:MonthAVG[10],12:MonthAVG[11]})
     MonthlyAverages=MonthlyAverages.transpose()
     return( MonthlyAverages )
 
