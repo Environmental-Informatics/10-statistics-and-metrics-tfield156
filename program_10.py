@@ -94,7 +94,7 @@ def CalcRBindex(Qvalues):
     totalDischarge = Qvalues.sum() #sum discharge for entire time period
     deltaDischarge = 0 #Initially no discharge changes
     for i in range(len(Qvalues)-1): #For the whole dataset
-        deltaDischarge = deltaDischarge + np.abs(Qvalues[i+1]-Qvalues[i]) #Add the incremental change in discharge to the total change
+        deltaDischarge = deltaDischarge + np.abs(Qvalues[i]-Qvalues[i+1]) #Add the incremental change in discharge to the total change
     RBindex=deltaDischarge/totalDischarge #Ratio of incremental sum to total discharge
     
     return ( RBindex )
@@ -179,12 +179,12 @@ def GetMonthlyStatistics(DataDF):
     for the given streamflow time series.  Values are returned as a dataframe
     of monthly values for each year."""
 
-    mMean = DataDF['Discharge'].resample('M',label='left').mean() #monthly mean
-    mCV = DataDF['Discharge'].resample('M',label='left').std()/mMean *100 #coefficient of variance
+    mMean = DataDF['Discharge'].resample('M',label='right').mean() #monthly mean
+    mCV = DataDF['Discharge'].resample('M',label='right').std()/mMean *100 #coefficient of variance
     
     #shift month index to be first day of month, not last of previous month
-    mMean = mMean.shift(periods=1,freq='1D')
-    mCV = mCV.shift(periods=1,freq='1D')
+    #Mean = mMean.shift(periods=1,freq='1D')
+    #mCV = mCV.shift(periods=1,freq='1D')
     
     mTQ = []
     mRB = []
@@ -204,7 +204,7 @@ def GetMonthlyStatistics(DataDF):
     
     
     mDF = pd.DataFrame({'Mean Flow':mMean,'Coeff Var':mCV,'Tqmean':mTQ,'R-B Index':mRB})
-    MoDataDF=mDF #save to output variable
+    MoDataDF=mDF.resample('MS',how='sum') #save to output variable
     
     return ( MoDataDF )
 
