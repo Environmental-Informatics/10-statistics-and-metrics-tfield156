@@ -79,7 +79,7 @@ def CalcTqmean(Qvalues):
     qMean = Qvalues.mean() #calculate the mean
     adjValues = []  
     for i in range((Qvalues.size)):
-        if Qvalues[i] < qMean:
+        if Qvalues[i] <= qMean:
             adjValues.append(0)
         if Qvalues[i] > qMean:
             adjValues.append(1)
@@ -87,6 +87,7 @@ def CalcTqmean(Qvalues):
     #Qvalues.loc[(Qvalues-qMean) < 0] = Qvalues.loc[(Qvalues-qMean) < 0]*np.NaN
     #Qvalues.loc[(Qvalues-qMean) > 0] = np.sign(Qvalues.loc[(Qvalues-qMean) < 0])
     adjValues = pd.Series(adjValues)
+    adjValues.dropna(inplace=True)
     greaterThanMean = adjValues.sum()
     Tqmean = greaterThanMean/totalValues #Ratio of points greater than the mean
     return ( Tqmean )
