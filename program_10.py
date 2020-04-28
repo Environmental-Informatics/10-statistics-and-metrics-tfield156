@@ -79,11 +79,10 @@ def CalcTqmean(Qvalues):
     
     qMean = Qvalues.mean() #calculate the mean
     totalDataPoints = Qvalues.count() #total number of data points
-    greaterThanMean = np.sign(Qvalues - qMean) #Number of data points greater than the mean
-    greaterThanMean.loc[greaterThanMean < 0] = 0
-    greaterThanMean = greaterThanMean.sum()
+    Qvalues.loc[(Qvalues-qMean) < 0] = np.NaN
+    Qvalues.loc[(Qvalues-qMean) > 0] = 1
+    greaterThanMean = Qvalues.sum()
     Tqmean = greaterThanMean/totalDataPoints #Ratio of points greater than the mean
-    print(greaterThanMean/totalDataPoints)
     return ( Tqmean )
 
 def CalcRBindex(Qvalues):
