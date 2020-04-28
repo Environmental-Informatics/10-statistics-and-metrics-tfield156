@@ -74,7 +74,7 @@ def CalcTqmean(Qvalues):
        exceeds mean streamflow for each year. Tqmean is based on the
        duration rather than the volume of streamflow. The routine returns
        the Tqmean value for the given data array."""
-    Qvalues.dropna() #remove NaN values
+    Qvalues.dropna(inplace=True) #remove NaN values
     qMean = Qvalues.mean() #calculate the mean
     totalDataPoints = Qvalues.count() #total number of data points
     greaterThanMean = Qvalues.loc[Qvalues > qMean].count() #Number of data points greater than the mean
@@ -90,7 +90,7 @@ def CalcRBindex(Qvalues):
        values of day-to-day changes in daily discharge volumes
        (pathlength) by total discharge volumes for each year. The
        routine returns the RBindex value for the given data array."""
-    Qvalues.dropna() #Remove NaN values
+    Qvalues.dropna(inplace=True) #Remove NaN values
     totalDischarge = Qvalues.sum() #sum discharge for entire time period
     deltaDischarge = 0 #Initially no discharge changes
     for i in range(len(Qvalues)-1): #For the whole dataset
@@ -108,7 +108,7 @@ def Calc7Q(Qvalues):
        that year.  The routine returns the 7Q (7-day low flow) value
        for the given data array."""
     
-    Qvalues.dropna() #Remove NaN values
+    Qvalues.dropna(inplace=True) #Remove NaN values
     moveAVG = Qvalues.rolling(window=7).mean() #7-day moving average
     val7Q = moveAVG.min() #minimum moving average value
     return ( val7Q )
