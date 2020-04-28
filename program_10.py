@@ -74,7 +74,7 @@ def CalcTqmean(Qvalues):
        duration rather than the volume of streamflow. The routine returns
        the Tqmean value for the given data array."""
 
-    Qvalues=Qvalues.dropna() #remove NaN values
+    Qvalues.dropna(inplace=True) #remove NaN values
     totalValues = Qvalues.count()
     qMean = Qvalues.mean() #calculate the mean
     adjValues = np.sign(Qvalues-qMean)
@@ -97,9 +97,15 @@ def CalcRBindex(Qvalues):
        routine returns the RBindex value for the given data array."""
     Qvalues.dropna(inplace=True) #Remove NaN values
     totalDischarge = Qvalues.sum() #sum discharge for entire time period
-    deltaDischarge = 0 #Initially no discharge changes
-    for i in range(len(Qvalues)-1): #For the whole dataset
-        deltaDischarge = deltaDischarge + np.abs(Qvalues[i]-Qvalues[i+1]) #Add the incremental change in discharge to the total change
+    #deltaDischarge = 0 #Initially no discharge changes
+    #for i in range(len(Qvalues)-1): #For the whole dataset
+    #    deltaDischarge = deltaDischarge + abs(Qvalues[i]-Qvalues[i+1]) #Add the incremental change in discharge to the total change
+    deltaDischarge = Qvalues.diff()
+    deltaDischarge.dropna(inplace=True)
+    
+    deltaDischarge = abs(deltaDischarge)
+    deltaDischarge = deltaDischarge.sum()
+    
     RBindex=deltaDischarge/totalDischarge #Ratio of incremental sum to total discharge
     
     return ( RBindex )
