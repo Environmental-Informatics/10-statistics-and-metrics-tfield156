@@ -79,7 +79,8 @@ def CalcTqmean(Qvalues):
     qSum = Qvalues.sum()
     qMean = qSum/totalValues #calculate the mean
     adjValues = Qvalues-qMean
-    for i in range(len(adjValues)):
+    #print(adjValues.size)
+    for i in range((adjValues.size)):
         if adjValues[i] < 0:
             adjValues[i] = 0
     adjValues.dropna(inplace=True)
