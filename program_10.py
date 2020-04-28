@@ -84,8 +84,8 @@ def CalcTqmean(Qvalues):
     #Qvalues.loc[(Qvalues-qMean) < 0] = Qvalues.loc[(Qvalues-qMean) < 0]*np.NaN
     #Qvalues.loc[(Qvalues-qMean) > 0] = np.sign(Qvalues.loc[(Qvalues-qMean) < 0])
     greaterThanMean = adjValues.sum()
-    Tqmean = greaterThanMean/totalValues #Ratio of points greater than the mean
-    return ( Tqmean )
+    T_Qmean = greaterThanMean/totalValues #Ratio of points greater than the mean
+    return ( T_Qmean )
 
 def CalcRBindex(Qvalues):
     """This function computes the Richards-Baker Flashiness Index
