@@ -125,7 +125,7 @@ def CalcExceed3TimesMedian(Qvalues):
        provided) and then counting the number of days with flow greater than 
        3 times that value. The routine returns the count of events greater 
        than 3 times the median annual flow value for the given data array."""
-
+    Qvalues.dropna(inplace=True) #Remove NaN values
     qMedian = Qvalues.median() #get the median
     adjValues = Qvalues-(3*qMedian)
     for i in range(len(adjValues)):
