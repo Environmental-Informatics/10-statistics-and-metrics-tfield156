@@ -179,12 +179,8 @@ def GetMonthlyStatistics(DataDF):
     for the given streamflow time series.  Values are returned as a dataframe
     of monthly values for each year."""
 
-    mMean = DataDF['Discharge'].resample('M',label='right').mean() #monthly mean
-    mCV = DataDF['Discharge'].resample('M',label='right').std()/mMean *100 #coefficient of variance
-    
-    #shift month index to be first day of month, not last of previous month
-    #Mean = mMean.shift(periods=1,freq='1D')
-    #mCV = mCV.shift(periods=1,freq='1D')
+    mMean = DataDF['Discharge'].resample('M',label='left',loffset='1D').mean() #monthly mean
+    mCV = DataDF['Discharge'].resample('M',label='left',loffset='1D').std()/mMean *100 #coefficient of variance
     
     mTQ = []
     mRB = []
@@ -204,7 +200,7 @@ def GetMonthlyStatistics(DataDF):
     
     
     mDF = pd.DataFrame({'Mean Flow':mMean,'Coeff Var':mCV,'Tqmean':mTQ,'R-B Index':mRB})
-    MoDataDF=mDF.resample('MS',how='sum') #save to output variable
+    MoDataDF=mDF #save to output variable
     
     return ( MoDataDF )
 
