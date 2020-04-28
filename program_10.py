@@ -74,7 +74,7 @@ def CalcTqmean(Qvalues):
        duration rather than the volume of streamflow. The routine returns
        the Tqmean value for the given data array."""
 
-    Qvalues.dropna(inplace=True) #remove NaN values
+    Qvalues=Qvalues.dropna() #remove NaN values
     totalValues = Qvalues.count()
     qMean = Qvalues.mean() #calculate the mean
     adjValues = np.sign(Qvalues-qMean)
@@ -84,8 +84,8 @@ def CalcTqmean(Qvalues):
     #Qvalues.loc[(Qvalues-qMean) < 0] = Qvalues.loc[(Qvalues-qMean) < 0]*np.NaN
     #Qvalues.loc[(Qvalues-qMean) > 0] = np.sign(Qvalues.loc[(Qvalues-qMean) < 0])
     greaterThanMean = adjValues.sum()
-    T_Qmean = greaterThanMean/totalValues #Ratio of points greater than the mean
-    return ( T_Qmean )
+    Tqmean = greaterThanMean/totalValues #Ratio of points greater than the mean
+    return ( Tqmean )
 
 def CalcRBindex(Qvalues):
     """This function computes the Richards-Baker Flashiness Index
