@@ -319,4 +319,3 @@ if __name__ == '__main__':
     monthlyMetrics.to_csv('Monthly_Metrics.csv',header=True)
     annualAVGout.to_csv('Average_Annual_Metrics.txt',header=True,sep='\t',index=False)
     monthlyAVGout.to_csv('Average_Monthly_Metrics.txt',header=True,sep='\t')
-    
