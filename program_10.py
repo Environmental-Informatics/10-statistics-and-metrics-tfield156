@@ -64,7 +64,6 @@ def ClipData( DataDF, startDate, endDate ):
     
     # quantify the number of missing values
     MissingValues = DataDF["Discharge"].isna().sum()
-    
     return( DataDF, MissingValues )
 
 def CalcTqmean(Qvalues):
@@ -76,13 +75,13 @@ def CalcTqmean(Qvalues):
        the Tqmean value for the given data array."""
 
     Qvalues.dropna(inplace=True) #remove NaN values
-    
+    print(Qvalues.count())
     qMean = Qvalues.mean() #calculate the mean
-    totalDataPoints = Qvalues.count() #total number of data points
-    Qvalues.loc[(Qvalues-qMean) < 0] = np.NaN
-    Qvalues.loc[(Qvalues-qMean) > 0] = 1
-    greaterThanMean = Qvalues.sum()
-    Tqmean = greaterThanMean/totalDataPoints #Ratio of points greater than the mean
+    #totalDataPoints = Qvalues.count() #total number of data points
+    #Qvalues.loc[(Qvalues-qMean) < 0] = Qvalues.loc[(Qvalues-qMean) < 0]*np.NaN
+    #Qvalues.loc[(Qvalues-qMean) > 0] = np.sign(Qvalues.loc[(Qvalues-qMean) < 0])
+    #greaterThanMean = Qvalues.sum()
+    Tqmean = qMean#greaterThanMean/totalDataPoints #Ratio of points greater than the mean
     return ( Tqmean )
 
 def CalcRBindex(Qvalues):
@@ -168,7 +167,7 @@ def GetAnnualStatistics(DataDF):
         endDate = startDate + pd.DateOffset(days=365) #a year later (leap dependent)
         if (endDate.month == 10): #if 10/01, shift back a day (not leap year)
             endDate = endDate - pd.DateOffset(days=1) # force last day of 9/30/XXXX
-
+        
     #create dataframe out of all the statistics
     WYDF = pd.DataFrame({'Mean Flow':WYmean,'Peak Flow':WYpeak,'Median Flow':WYmedian,
                          'Coeff Var':WYcoeffvar,'Skew':WYskew,'Tqmean':WYtqmean,
@@ -273,7 +272,7 @@ if __name__ == '__main__':
         
         # calculate descriptive statistics for each water year
         WYDataDF[file] = GetAnnualStatistics(DataDF[file])
-        
+        '''
         # calcualte the annual average for each stistic or metric
         AnnualAverages[file] = GetAnnualAverages(WYDataDF[file])
         
@@ -317,4 +316,4 @@ if __name__ == '__main__':
     monthlyMetrics.to_csv('Monthly_Metrics.csv',header=True)
     annualAVGout.to_csv('Average_Annual_Metrics.txt',header=True,sep='\t',index=False)
     monthlyAVGout.to_csv('Average_Monthly_Metrics.txt',header=True,sep='\t')
-    
+    '''
