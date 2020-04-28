@@ -75,13 +75,16 @@ def CalcTqmean(Qvalues):
        the Tqmean value for the given data array."""
 
     Qvalues.dropna(inplace=True) #remove NaN values
-    print(Qvalues.count())
+    totalValues = Qvalues.count()
     qMean = Qvalues.mean() #calculate the mean
-    #totalDataPoints = Qvalues.count() #total number of data points
+    adjValues = np.sign(Qvalues-qMean)
+    for i in range(len(adjValues)):
+        if adjValues[i] < 0:
+            adjValues[i] = 0
     #Qvalues.loc[(Qvalues-qMean) < 0] = Qvalues.loc[(Qvalues-qMean) < 0]*np.NaN
     #Qvalues.loc[(Qvalues-qMean) > 0] = np.sign(Qvalues.loc[(Qvalues-qMean) < 0])
-    #greaterThanMean = Qvalues.sum()
-    Tqmean = qMean#greaterThanMean/totalDataPoints #Ratio of points greater than the mean
+    greaterThanMean = adjValues.sum()
+    Tqmean = greaterThanMean/totalValues #Ratio of points greater than the mean
     return ( Tqmean )
 
 def CalcRBindex(Qvalues):
@@ -272,7 +275,7 @@ if __name__ == '__main__':
         
         # calculate descriptive statistics for each water year
         WYDataDF[file] = GetAnnualStatistics(DataDF[file])
-        '''
+        
         # calcualte the annual average for each stistic or metric
         AnnualAverages[file] = GetAnnualAverages(WYDataDF[file])
         
@@ -316,4 +319,4 @@ if __name__ == '__main__':
     monthlyMetrics.to_csv('Monthly_Metrics.csv',header=True)
     annualAVGout.to_csv('Average_Annual_Metrics.txt',header=True,sep='\t',index=False)
     monthlyAVGout.to_csv('Average_Monthly_Metrics.txt',header=True,sep='\t')
-    '''
+    
