@@ -77,12 +77,12 @@ def CalcTqmean(Qvalues):
     Qvalues.dropna(inplace=True) #remove NaN values
     totalValues = Qvalues.count()
     qMean = Qvalues.mean() #calculate the mean
-    adjValues = np.sign(Qvalues-qMean)
+    adjValues = Qvalues-qMean
     for i in range(len(adjValues)):
         if adjValues[i] < 0:
             adjValues[i] = 0
-    #Qvalues.loc[(Qvalues-qMean) < 0] = Qvalues.loc[(Qvalues-qMean) < 0]*np.NaN
-    #Qvalues.loc[(Qvalues-qMean) > 0] = np.sign(Qvalues.loc[(Qvalues-qMean) < 0])
+        if adjValues[i] > 0:
+            adjValues[i] = 1
     greaterThanMean = adjValues.sum()
     Tqmean = greaterThanMean/totalValues #Ratio of points greater than the mean
     return ( Tqmean )
@@ -125,9 +125,15 @@ def CalcExceed3TimesMedian(Qvalues):
        provided) and then counting the number of days with flow greater than 
        3 times that value. The routine returns the count of events greater 
        than 3 times the median annual flow value for the given data array."""
-    
+
     qMedian = Qvalues.median() #get the median
-    median3x = Qvalues.loc[Qvalues > (3*qMedian)].count() #count how many datapoints exceed it by more than 3x
+    adjValues = Qvalues-(3*qMedian)
+    for i in range(len(adjValues)):
+        if adjValues[i] < 0:
+            adjValues[i] = 0
+        if adjValues[i] > 0:
+            adjValues[i] = 1
+    median3x = adjValues.sum() #count how many datapoints exceed it by more than 3x
     
     return ( median3x )
 
