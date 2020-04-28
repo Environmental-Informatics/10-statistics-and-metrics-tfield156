@@ -74,12 +74,16 @@ def CalcTqmean(Qvalues):
        exceeds mean streamflow for each year. Tqmean is based on the
        duration rather than the volume of streamflow. The routine returns
        the Tqmean value for the given data array."""
+
     Qvalues.dropna(inplace=True) #remove NaN values
+    
     qMean = Qvalues.mean() #calculate the mean
     totalDataPoints = Qvalues.count() #total number of data points
-    greaterThanMean = Qvalues.loc[Qvalues > qMean].count() #Number of data points greater than the mean
+    greaterThanMean = np.sign(Qvalues - qMean) #Number of data points greater than the mean
+    greaterThanMean.loc[greaterThanMean < 0] = 0
+    greaterThanMean = greaterThanMean.sum()
     Tqmean = greaterThanMean/totalDataPoints #Ratio of points greater than the mean
-    
+    print(greaterThanMean/totalDataPoints)
     return ( Tqmean )
 
 def CalcRBindex(Qvalues):
