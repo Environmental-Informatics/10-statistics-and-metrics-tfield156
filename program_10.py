@@ -232,7 +232,7 @@ def GetMonthlyAverages(MoDataDF):
                                     'July':MonthAVG[6],'August':MonthAVG[7],
                                     'September':MonthAVG[8],'October':MonthAVG[9],
                                     'November':MonthAVG[10],'December':MonthAVG[11]})
-    
+    MonthlyAverages=MonthlyAverages.transpose()
     return( MonthlyAverages )
 
 # the following condition checks whether we are running as a script, in which 
@@ -303,9 +303,9 @@ if __name__ == '__main__':
     anAVGtippe['Station'] = 'Tippe'
     annualAVGout = anAVGwildcat.append(anAVGtippe)
 
-    monAVGwildcat = MonthlyAverages['Wildcat'].transpose()
+    monAVGwildcat = MonthlyAverages['Wildcat']
     monAVGwildcat['Station'] = 'Wildcat'
-    monAVGtippe = MonthlyAverages['Tippe'].transpose()
+    monAVGtippe = MonthlyAverages['Tippe']
     monAVGtippe['Station'] = 'Tippe'
     monthlyAVGout = monAVGwildcat.append(monAVGtippe)
     
