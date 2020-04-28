@@ -81,6 +81,7 @@ def CalcTqmean(Qvalues):
     for i in range(len(adjValues)):
         if adjValues[i] < 0:
             adjValues[i] = 0
+    adjValues.dropna(inplace=True)
     #Qvalues.loc[(Qvalues-qMean) < 0] = Qvalues.loc[(Qvalues-qMean) < 0]*np.NaN
     #Qvalues.loc[(Qvalues-qMean) > 0] = np.sign(Qvalues.loc[(Qvalues-qMean) < 0])
     greaterThanMean = adjValues.sum()
